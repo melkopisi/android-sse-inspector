@@ -5,6 +5,10 @@
 [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.com)
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=26)
 
+<p align="center">
+  <img src="assets/demo.gif" alt="SSE Inspector Live Terminal Demo" width="300" />
+</p>
+
 A lightweight, non-blocking, in-app developer tool and live terminal console designed specifically for inspecting **Server-Sent Events (SSE)** and streaming HTTP connections in Android applications.
 
 ---
