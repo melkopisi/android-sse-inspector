@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application>
+        <activity
+            android:name=".ui.SseInspectorActivity"
+            android:exported="false"
+            android:label="SSE Inspector"
+            android:launchMode="singleTask"
+            android:taskAffinity="me.melkopisi.sseinspector.task" />
+    </application>
+
+</manifest>
