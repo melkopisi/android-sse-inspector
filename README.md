@@ -106,18 +106,7 @@ dependencies {
 > releaseImplementation(projects.sseInspectorNoOp)
 > ```
 
-### 3. Repository Configuration (`jitpack.yml`)
-
-When creating the standalone public GitHub repository, place a `jitpack.yml` file in the repo root to ensure JitPack builds with Java 17:
-
-```yaml
-jdk:
-  - openjdk17
-before_install:
-  - ./gradlew --version
-```
-
-### 4. Notification Permission (Android 13+)
+### 3. Notification Permission (Android 13+)
 
 On Android 13 (API 33) and above, ensure your app requests `android.permission.POST_NOTIFICATIONS` at runtime so the silent ongoing stream notification can display in the status bar.
 
