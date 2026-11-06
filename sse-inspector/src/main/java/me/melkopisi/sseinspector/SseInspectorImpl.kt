@@ -1,7 +1,9 @@
 package me.melkopisi.sseinspector
 
+import android.app.Activity
 import me.melkopisi.sseinspector.data.SseInspectorRepository
 import me.melkopisi.sseinspector.notification.SseNotificationManager
+import me.melkopisi.sseinspector.ui.SseInspectorActivity
 import okhttp3.Request
 import okhttp3.Response
 import javax.inject.Inject
@@ -56,4 +58,6 @@ class SseInspectorImpl @Inject constructor(
         repository.recordFailure(sessionId, throwable, responseCode, responseBody)
         notificationManager.updateStreamState(repository.getActiveStreamCount())
     }
+
+    override fun isInspectorActivity(activity: Activity): Boolean = activity is SseInspectorActivity
 }

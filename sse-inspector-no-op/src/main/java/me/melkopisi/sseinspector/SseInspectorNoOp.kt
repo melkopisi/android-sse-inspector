@@ -1,5 +1,6 @@
 package me.melkopisi.sseinspector
 
+import android.app.Activity
 import okhttp3.Request
 import okhttp3.Response
 import javax.inject.Inject
@@ -18,4 +19,5 @@ class SseInspectorNoOp @Inject constructor() : SseInspector {
         responseCode: Int?,
         responseBody: String?
     ) = Unit
+    override fun isInspectorActivity(activity: Activity): Boolean = false
 }

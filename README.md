@@ -72,7 +72,7 @@ Add `sse-inspector` to your debug/QA build variants and `sse-inspector-no-op` to
 
 #### Option A: Direct Gradle Dependencies
 ```kotlin
-val sseInspectorVersion = "1.0.1" // see badge above for latest
+val sseInspectorVersion = "1.1.0" // see badge above for latest
 
 dependencies {
     // Active inspector for Debug / QA builds
@@ -86,7 +86,7 @@ dependencies {
 #### Option B: Version Catalog (`libs.versions.toml`)
 ```toml
 [versions]
-sseInspector = "1.0.1"
+sseInspector = "1.1.0"
 
 [libraries]
 sse-inspector = { module = "com.github.melkopisi.android-sse-inspector:sse-inspector", version.ref = "sseInspector" }
@@ -229,6 +229,46 @@ class SseClient @Inject constructor(
    }
    context.startActivity(intent)
    ```
+
+### Keeping streams open while the inspector is shown
+
+Many apps close their SSE stream when the screen holding it pauses. Opening the inspector pauses that screen too, so the stream is cancelled and a new session starts when you come back. Use `isInspectorActivity` to skip the stop only for the inspector.
+
+The check has to wait until the next activity resumes: Android pauses your screen **before** the inspector is created (`onPause` → inspector `onResume` → `onStop`). Stop as before when your own `onStop` arrives (home, recents), when another activity resumes, or after a short timeout:
+
+```kotlin
+class InspectorAwareStopper(
+    private val inspector: SseInspector,
+    private val stop: () -> Unit,
+) : Application.ActivityLifecycleCallbacks {
+    private val handler = Handler(Looper.getMainLooper())
+    private val stopNow = Runnable { settle(keepOpen = false) }
+    private var pending = false
+
+    fun onScreenPaused() {
+        pending = true
+        handler.postDelayed(stopNow, 500)
+    }
+
+    fun onScreenStopped() = settle(keepOpen = false)
+
+    fun onScreenResumed() = settle(keepOpen = true)
+
+    override fun onActivityResumed(activity: Activity) =
+        settle(keepOpen = inspector.isInspectorActivity(activity))
+
+    private fun settle(keepOpen: Boolean) {
+        if (!pending) return
+        pending = false
+        handler.removeCallbacks(stopNow)
+        if (!keepOpen) stop()
+    }
+
+    // Other callbacks left empty.
+}
+```
+
+In release builds `sse-inspector-no-op` always returns `false`, so streams stop exactly as before.
 
 ---
 
