@@ -49,7 +49,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.melkopisi"
                 artifactId = "sse-inspector-no-op"
-                version = "1.0.1"
+                version = "1.1.0"
             }
         }
     }

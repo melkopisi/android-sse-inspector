@@ -1,5 +1,6 @@
 package me.melkopisi.sseinspector
 
+import android.app.Activity
 import okhttp3.Request
 import okhttp3.Response
 
@@ -26,4 +27,11 @@ interface SseInspector {
 
     /** Called on connection or network failure */
     fun onFailure(sessionId: String, throwable: Throwable?, responseCode: Int?, responseBody: String?)
+
+    /**
+     * True when [activity] is the inspector's own screen. Lets apps that close their streams
+     * when a screen pauses keep them open while the inspector is shown on top.
+     * Always false in the no-op artifact.
+     */
+    fun isInspectorActivity(activity: Activity): Boolean
 }
